@@ -3,20 +3,54 @@
     "model": "usersapp.user",
     "pk": 1,
     "fields": {
-      "user_name": "Васька",
-      "first_name": "Василий",
-      "last_name": "Мощный",
-      "email": "1@gmail.com"
+      "password": "pbkdf2_sha256$320000$H2u6WEyQl3hwae5Ea5PYlT$NULtrtI+zdTmv/voSYjnePGvnX8hD0A0UTDnw3p7AZQ=",
+      "last_login": "2021-12-14T15:54:12.213Z",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2021-12-14T15:53:48.716Z",
+      "username": "Admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "x@gmail.com",
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
     "model": "usersapp.user",
     "pk": 2,
     "fields": {
-      "user_name": "Петька",
-      "first_name": "Петр",
-      "last_name": "Пяточкин",
-      "email": "2@gmail.com"
+      "password": "123",
+      "last_login": "2021-12-14T15:56:11Z",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-12-14T15:54:20Z",
+      "username": "Мощьный",
+      "first_name": "Василий",
+      "last_name": "Мощанский",
+      "email": "1@gmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "usersapp.user",
+    "pk": 3,
+    "fields": {
+      "password": "123",
+      "last_login": "2021-12-14T15:57:43Z",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-12-14T15:57:34Z",
+      "username": "Тапок",
+      "first_name": "Анатолий",
+      "last_name": "Тапкин",
+      "email": "2@gmail.com",
+      "groups": [],
+      "user_permissions": []
     }
   }
 ]
