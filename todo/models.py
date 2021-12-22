@@ -15,6 +15,9 @@ class Project(models.Model):
                                             verbose_name='участники')
     is_active = models.BooleanField(verbose_name='активен', default=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Todo(models.Model):
     name = models.CharField(max_length=64, verbose_name='название')
@@ -28,3 +31,6 @@ class Todo(models.Model):
     date_created = models.DateTimeField(default=timezone.now, verbose_name='дата создания')
     date_updated = models.DateTimeField(default=timezone.now, verbose_name='дата изменения')
     is_active = models.BooleanField(verbose_name='активно', default=True)
+
+    def __str__(self):
+        return self.name
