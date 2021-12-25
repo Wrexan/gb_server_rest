@@ -1,7 +1,5 @@
-import React from "react";
-
 const Footer = () => (
-  <div className="footer">
+  <div className="footer bgd">
     <p>Wrexan © 2021</p>
   </div>
 );
