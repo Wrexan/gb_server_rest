@@ -10,8 +10,9 @@ import Footer from './components/footer';
 import TodoList from "./components/Todo";
 import ProjectPage from "./components/Project";
 import LoginForm from './components/Auth.js';
+// import * as url from "url";
 
-let username = 'Пользователь'
+let useranon = 'Пользователь'
 
 const NotFound404 = () => {
     let loc = useLocation()
@@ -28,7 +29,8 @@ class App extends React.Component {
             'projs': [],
             'todos': [],
             'token': '',
-            'user': 'Вы не вошли'
+            'user': useranon,
+            'home': 0,
         }
     }
 
@@ -45,7 +47,8 @@ class App extends React.Component {
 
     logout() {
         this.set_token('')
-        this.state.user = 'Вы не вошли'
+        this.state.user = useranon
+        this.state.home = 1
     }
 
     get_token_from_storage() {
@@ -63,6 +66,8 @@ class App extends React.Component {
                 // console.log(token)
                 this.set_token(response.data.token)
                 this.state.user = username
+                this.state.home = 1
+                // console.log('home=',this.state.home)
                 // console.log('token ' + this.state.token)
                 // console.log('response.data ' + response.data)
             }).catch(error => alert('Неверный логин или пароль'))
@@ -90,43 +95,49 @@ class App extends React.Component {
             .then(response => {
                 this.setState({users: response.data.results})
             }).catch(error => {
-                console.log(error)
-                this.setState({users: []})
-            })
+            console.log(error)
+            this.setState({users: []})
+        })
 
         const requestOne = axios.get('http://127.0.0.1:8000/api/projects/', {headers});
         const requestTwo = axios.get('http://127.0.0.1:8000/api/todos/', {headers});
         axios
             .all([requestOne, requestTwo])
             .then(axios.spread((...responses) => {
-                    console.log(responses[0].data, responses[1].data)
+                    // console.log(responses[0].data, responses[1].data)
                     this.setState({
                         projs: responses[0].data.results,
                         todos: responses[1].data.results
                     })
                 })
             ).catch(error => {
-                console.log(error)
-                this.setState({projs: []})
-                this.setState({todos: []})
-            })
+            console.log(error)
+            this.setState({projs: []})
+            this.setState({todos: []})
+        })
 
         axios
             .get('http://127.0.0.1:8000/api/todos/', {headers})
             .then(response => {
                 this.setState({todos: response.data.results})
             }).catch(error => {
-                console.log(error)
-                this.setState({todos: []})
-            })
+            console.log(error)
+            this.setState({todos: []})
+        })
     }
 
     render() {
+        // if (this.state.home === 1) {
+        //     return <Redirect to='/projects'/>;
+        //     // <Routes>
+        //     //     <Route path='/login' element={<Navigate to='/projects'/>}/>;
+        //     // </Routes>)
+        // }
         return (
             <div>
                 <BrowserRouter>
                     {/*<Menu/>*/}
-                    <header className="bgd w">
+                    <nav className="bgd w">
                         <div className="menu c z">
                             <li><Link to='/'>Пользователи</Link></li>
                             <li><Link to='/projects'>Проекты</Link></li>
@@ -135,10 +146,10 @@ class App extends React.Component {
                         <div className="menu r z">
                             <li><span>{this.state.user}</span></li>
                             <li>{this.is_auth() ?
-                            <a className='button' onClick={() => this.logout()}>Выйти</a> :
-                            <Link to='/login'>Войти</Link>}</li>
+                                <a className='button' onClick={() => this.logout()}>Выйти</a> :
+                                <Link to='/login'>Войти</Link>}</li>
                         </div>
-                    </header>
+                    </nav>
                     <Routes>
                         <Route exact path='/' element={<UserList users={this.state.users}/>}/>
                         <Route path='/user/:id' element={<ProjectPage projs={this.state.projs}/>}/>
@@ -149,17 +160,16 @@ class App extends React.Component {
                             projs={this.state.projs}
                             todos={this.state.todos}/>}/>
                         <Route exact path='/todos' element={<TodoList todos={this.state.todos}/>}/>
-                        <Route path='/todo/:id' element={<TodoList todos={this.state.todos}/>}/>
-                        <Route path='/login' element={<LoginForm
-                            get_token={(username, password) => this.get_token(username, password)}/>}/>
+                        <Route path='/todo/:id' element={
+                            <TodoList todos={this.state.todos}/>}/>
+                        <Route path='/login'
+                            element={this.state.home===0 ?
+                                <LoginForm get_token={(username, password) =>
+                                    this.get_token(username, password)}/> :
+                                <Navigate to='/projects'/>}/>
                         <Route path='*' element={<NotFound404/>}/>
                     </Routes>
                 </BrowserRouter>
-
-                {/*<UserList users={this.state.users}/>*/}
-                {/*<ProjectList projs={this.state.projs}/>*/}
-                {/*<ProjectList projs={this.state.projs}/>*/}
-                {/*<ProjectList projs={this.state.projs}/>*/}
                 <Footer/>
             </div>
         )
