@@ -3,8 +3,8 @@
     "model": "usersapp.user",
     "pk": 1,
     "fields": {
-      "password": "123",
-      "last_login": "2021-12-14T15:54:12.213Z",
+      "password": "pbkdf2_sha256$320000$BxXp9DQaOg1h0Uo8dkKJWe$n5b44kfDyG/aLwkkYT67+NLwz9gu8sxid1OB4Cic4bE=",
+      "last_login": "2021-12-14T19:08:06.335Z",
       "is_superuser": true,
       "is_staff": true,
       "is_active": true,
@@ -21,7 +21,7 @@
     "model": "usersapp.user",
     "pk": 2,
     "fields": {
-      "password": "123",
+      "password": "pbkdf2_sha256$320000$F5w2SlCij7xtB8USOKSEld$byZvFBqwe9pQxIqalcy7oacDJ7rs/ye+DQxZ94ogRcA=",
       "last_login": "2021-12-14T15:56:11Z",
       "is_superuser": false,
       "is_staff": false,
@@ -39,7 +39,7 @@
     "model": "usersapp.user",
     "pk": 3,
     "fields": {
-      "password": "123",
+      "password": "pbkdf2_sha256$320000$1S3GyL0FrnSTbMupxHoWPU$S/xFC4fe3h1XhQ2ufEyHGlN2tNiCuIG15cz+qu3Ztgc=",
       "last_login": "2021-12-14T15:57:43Z",
       "is_superuser": false,
       "is_staff": false,
