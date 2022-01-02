@@ -30,13 +30,13 @@ class App extends React.Component {
             'todos': [],
             'token': '',
             'user': useranon,
-            'home': 0,
         }
     }
 
-    set_token(token) {
+    set_token(token, user) {
         const cookies = new Cookies()
         cookies.set('token', token)
+        cookies.set('user', user)
         this.setState({'token': token}, () => this.load_data())
     }
 
@@ -46,15 +46,22 @@ class App extends React.Component {
     }
 
     logout() {
-        this.set_token('')
+        this.set_token('', useranon)
         this.state.user = useranon
-        this.state.home = 1
     }
 
     get_token_from_storage() {
         const cookies = new Cookies()
         const token = cookies.get('token')
-        this.setState({'token': token}, this.load_data)
+        const user = cookies.get('user')
+        // console.log('token user' + token, user)
+        // console.log('cookie token ' + cookies.get('token'))
+        if (!token){
+            this.logout()
+        }else{
+            this.state.user = user
+            this.setState({'token': token}, this.load_data)
+        }
     }
 
     get_token(username, password) {
@@ -62,14 +69,8 @@ class App extends React.Component {
             // .post('http://127.0.0.1:8000/api/token/', {"username": username, "password": password})
             .post('http://127.0.0.1:8000/api-token-auth/', {"username": username, "password": password})
             .then(response => {
-                // const token = response.data.token
-                // console.log(token)
-                this.set_token(response.data.token)
+                this.set_token(response.data.token, username)
                 this.state.user = username
-                this.state.home = 1
-                // console.log('home=',this.state.home)
-                // console.log('token ' + this.state.token)
-                // console.log('response.data ' + response.data)
             }).catch(error => alert('Неверный логин или пароль'))
     }
 
@@ -85,10 +86,11 @@ class App extends React.Component {
 
     componentDidMount() {
         this.get_token_from_storage()
-
+        // console.log('mount token ' + this.state.token)
     }
 
     load_data() {
+        // console.log('load_data() token ' + this.state.token)
         let headers = this.get_headers()
         axios
             .get('http://127.0.0.1:8000/api/users/', {headers})
@@ -127,16 +129,9 @@ class App extends React.Component {
     }
 
     render() {
-        // if (this.state.home === 1) {
-        //     return <Redirect to='/projects'/>;
-        //     // <Routes>
-        //     //     <Route path='/login' element={<Navigate to='/projects'/>}/>;
-        //     // </Routes>)
-        // }
         return (
             <div>
                 <BrowserRouter>
-                    {/*<Menu/>*/}
                     <nav className="bgd w">
                         <div className="menu c z">
                             <li><Link to='/'>Пользователи</Link></li>
@@ -163,10 +158,10 @@ class App extends React.Component {
                         <Route path='/todo/:id' element={
                             <TodoList todos={this.state.todos}/>}/>
                         <Route path='/login'
-                            element={this.state.home===0 ?
-                                <LoginForm get_token={(username, password) =>
-                                    this.get_token(username, password)}/> :
-                                <Navigate to='/projects'/>}/>
+                               element={this.is_auth() ?
+                                   <Navigate to='/projects'/> :
+                                   <LoginForm get_token={(username, password) =>
+                                       this.get_token(username, password)}/>}/>
                         <Route path='*' element={<NotFound404/>}/>
                     </Routes>
                 </BrowserRouter>
