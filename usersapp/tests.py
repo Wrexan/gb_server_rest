@@ -96,15 +96,16 @@ class TestTodoViewSet(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_edit_mixer(self):
-        proj = mixer.blend(Project)
+        user = mixer.blend(User)
+        proj = mixer.blend(Project, repo_link='')
         todo = mixer.blend(Todo, author_id=1)
         admin = User.objects.create_superuser('admin_vasia', 'admin@admin.com', 'admin123456')
         self.client.login(username='admin_vasia', password='admin123456')
         response = self.client.put(f'/api/todos/{todo.id}/',
                                    {'name': 'Политех',
-                                    'related_project': proj,
+                                    'related_project': proj.id,
                                     'author': admin.id,
-                                    'task': 'test'}, content_type='application/json')
+                                    'task': 'test'}, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         todo = Todo.objects.get(id=todo.id)
         self.assertEqual(todo.name, 'Политех')
