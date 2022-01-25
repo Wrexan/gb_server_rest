@@ -30,6 +30,7 @@ class App extends React.Component {
             'todos': [],
             'token': '',
             'user': useranon,
+            'del': '',
         }
     }
 
@@ -109,7 +110,8 @@ class App extends React.Component {
                     // console.log(responses[0].data, responses[1].data)
                     this.setState({
                         projs: responses[0].data.results,
-                        todos: responses[1].data.results
+                        todos: responses[1].data.results,
+                        del: ''
                     })
                 })
             ).catch(error => {
@@ -126,6 +128,22 @@ class App extends React.Component {
             console.log(error)
             this.setState({todos: []})
         })
+    }
+
+    deleteProject(id){
+        const headers = this.get_headers()
+        axios
+            .delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
+            .then(response => {
+                // const projs = response.data
+                this.setState({
+                    projs: this.state.projs.filter((proj)=>proj.id !== id),
+                    del: '1'})
+            }).catch(error => console.log(error))
+    }
+
+    is_del() {
+        return !!this.state.del
     }
 
     render() {
@@ -150,10 +168,20 @@ class App extends React.Component {
                         <Route path='/user/:id' element={<ProjectPage projs={this.state.projs}/>}/>
                         <Route path='/users' element={<Navigate to='/'/>}/>
                         <Route exact path='/projects' element={<ProjectPage
-                            projs={this.state.projs}/>}/>
-                        <Route path='/project/:id' element={<ProjectPage
                             projs={this.state.projs}
-                            todos={this.state.todos}/>}/>
+                            deleteProject={(id)=>this.deleteProject(id)}/>}/>
+                        <Route path='/project/:id' element={
+                            <ProjectPage
+                                projs={this.state.projs}
+                                todos={this.state.todos}
+                                deleteProject={(id)=>this.deleteProject(id)}/>}/>
+                               {/*<Route path='*' element={<Navigate to='/projects'/>}/>*/}
+                        {/*<Route path='/project/:id' element={this.is_del() ?*/}
+                        {/*    <Navigate to='/projects'/> :*/}
+                        {/*    <ProjectPage*/}
+                        {/*        projs={this.state.projs}*/}
+                        {/*        todos={this.state.todos}*/}
+                        {/*        deleteProject={(id)=>this.deleteProject(id)}/>}/>*/}
                         <Route exact path='/todos' element={<TodoList todos={this.state.todos}/>}/>
                         <Route path='/todo/:id' element={
                             <TodoList todos={this.state.todos}/>}/>

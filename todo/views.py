@@ -7,7 +7,7 @@ from .filters import ProjectFilter, ToDoByProjectNDatetimeFilter
 
 
 class ProjectLimitOffsetPaginator(LimitOffsetPagination):
-    default_limit = 10
+    default_limit = 20
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
