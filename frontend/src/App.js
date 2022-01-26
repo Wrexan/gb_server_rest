@@ -10,6 +10,7 @@ import Footer from './components/footer';
 import TodoList from "./components/Todo";
 import ProjectPage from "./components/Project";
 import LoginForm from './components/Auth.js';
+import ProjectForm from "./components/CreateForm";
 // import * as url from "url";
 
 let useranon = 'Пользователь'
@@ -178,6 +179,7 @@ class App extends React.Component {
                         <Route exact path='/' element={<UserList users={this.state.users}/>}/>
                         <Route path='/user/:id' element={<ProjectPage projs={this.state.projs}/>}/>
                         <Route path='/users' element={<Navigate to='/'/>}/>
+                        <Route exact path='/projects/create' element={<ProjectForm/>}/>
                         <Route exact path='/projects' element={<ProjectPage
                             projs={this.state.projs}
                             deleteItem={(id) => this.deleteItem(id)}/>}/>
