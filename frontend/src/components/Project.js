@@ -3,7 +3,7 @@ import {Link, useParams} from "react-router-dom";
 function activity(obj){
     if (obj.is_active === true){return 'Активен'}else{return 'Закрыт'}
 }
-const Project = ({proj, todo, deleteProject}) => {
+const Project = ({proj, todo}) => {
     let users = proj.involved_users
     return (
         <table className="win bgd">
@@ -31,18 +31,18 @@ const Project = ({proj, todo, deleteProject}) => {
     )
 }
 
-const ProjectItem = ({proj, deleteProject}) => {
+const ProjectItem = ({proj, deleteItem}) => {
     return (
         <tr>
             <td><Link to={`/project/${proj.id}`}>{proj.name}</Link></td>
             <td>{proj.repo_link}</td>
             <td><button type='button'>{activity(proj)}</button></td>
-            <td><button onClick={()=>deleteProject(proj.id)} type='button'>Удалить</button></td>
+            <td><button onClick={()=>deleteItem(proj.id)} type='button'>Удалить</button></td>
         </tr>
     )
 }
 
-const ProjectList = ({projs, deleteProject}) => {
+const ProjectList = ({projs, deleteItem}) => {
     return (
     <table className="win bgd">
         <thead>
@@ -54,12 +54,12 @@ const ProjectList = ({projs, deleteProject}) => {
             </tr>
         </thead>
         <tbody>
-            {projs.map((proj) => <ProjectItem proj={proj} deleteProject={deleteProject}/>)}
+            {projs.map((proj) => <ProjectItem proj={proj} deleteItem={deleteItem}/>)}
         </tbody>
     </table>
 )
 }
-const ProjectPage = ({projs, todos, deleteProject}) => {
+const ProjectPage = ({projs, todos, deleteItem}) => {
     // console.log('1:', typeof(projs), projs)
     // console.log('2:', typeof(todos), todos)
     let { id } = useParams()
@@ -70,9 +70,9 @@ const ProjectPage = ({projs, todos, deleteProject}) => {
         let todo = todos.filter(x => x.related_project.id === id)
         // console.log('3:', projs, id, typeof(proj), proj)
         // console.log('4:', typeof(todo), todo, todo.author)
-        return Project({proj, todo, deleteProject})
+        return Project({proj, todo, deleteItem})
     }else{
-        return ProjectList({projs, deleteProject})
+        return ProjectList({projs, deleteItem})
     }
 }
 

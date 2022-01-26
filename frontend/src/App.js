@@ -57,9 +57,9 @@ class App extends React.Component {
         const user = cookies.get('user')
         // console.log('token user' + token, user)
         // console.log('cookie token ' + cookies.get('token'))
-        if (!token){
+        if (!token) {
             this.logout()
-        }else{
+        } else {
             this.state.user = user
             this.setState({'token': token}, this.load_data)
         }
@@ -80,7 +80,7 @@ class App extends React.Component {
         if (this.is_auth()) {
             headers['Authorization'] = 'Token ' + this.state.token
             // headers['Authorization'] = 'Bearer ' + this.state.token
-            console.log('POST token ' + this.state.token)
+            // console.log('POST token ' + this.state.token)
         }
         return headers
     }
@@ -130,21 +130,32 @@ class App extends React.Component {
         })
     }
 
-    deleteProject(id){
+    deleteItem(id) {
         const headers = this.get_headers()
         axios
             .delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
             .then(response => {
                 // const projs = response.data
                 this.setState({
-                    projs: this.state.projs.filter((proj)=>proj.id !== id),
-                    del: '1'})
+                    projs: this.state.projs.filter((proj) => proj.id !== id)
+                })
+                // del: '1'})
+            }).catch(error => console.log(error))
+
+        axios
+            .delete(`http://127.0.0.1:8000/api/todos/${id}`, {headers})
+            .then(response => {
+                // const projs = response.data
+                this.setState({
+                    todos: this.state.todos.filter((todo) => todo.id !== id)
+                })
+                // del: '1'})
             }).catch(error => console.log(error))
     }
 
-    is_del() {
-        return !!this.state.del
-    }
+    // is_del() {
+    //     return !!this.state.del
+    // }
 
     render() {
         return (
@@ -169,22 +180,25 @@ class App extends React.Component {
                         <Route path='/users' element={<Navigate to='/'/>}/>
                         <Route exact path='/projects' element={<ProjectPage
                             projs={this.state.projs}
-                            deleteProject={(id)=>this.deleteProject(id)}/>}/>
+                            deleteItem={(id) => this.deleteItem(id)}/>}/>
                         <Route path='/project/:id' element={
                             <ProjectPage
                                 projs={this.state.projs}
                                 todos={this.state.todos}
-                                deleteProject={(id)=>this.deleteProject(id)}/>}/>
-                               {/*<Route path='*' element={<Navigate to='/projects'/>}/>*/}
+                                deleteItem={(id) => this.deleteItem(id)}/>}/>
+                        {/*<Route path='*' element={<Navigate to='/projects'/>}/>*/}
                         {/*<Route path='/project/:id' element={this.is_del() ?*/}
                         {/*    <Navigate to='/projects'/> :*/}
                         {/*    <ProjectPage*/}
                         {/*        projs={this.state.projs}*/}
                         {/*        todos={this.state.todos}*/}
                         {/*        deleteProject={(id)=>this.deleteProject(id)}/>}/>*/}
-                        <Route exact path='/todos' element={<TodoList todos={this.state.todos}/>}/>
-                        <Route path='/todo/:id' element={
-                            <TodoList todos={this.state.todos}/>}/>
+                        <Route exact path='/todos' element={<TodoList
+                            todos={this.state.todos}
+                            deleteItem={(id) => this.deleteItem(id)}/>}/>
+                        <Route path='/todo/:id' element={<TodoList
+                            todos={this.state.todos}
+                            deleteItem={(id) => this.deleteItem(id)}/>}/>
                         <Route path='/login'
                                element={this.is_auth() ?
                                    <Navigate to='/projects'/> :

@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
 
 function activity(obj){
-    if (obj.is_active === true){return 'активна'}else{return 'закрыта'}
+    if (obj.is_active === true){return 'Активна'}else{return 'Закрыта'}
 }
 
-const TodoItem = ({todo}) => {
+const TodoItem = ({todo, deleteItem}) => {
     return (
         <tr>
             <td>{todo.name}</td>
@@ -15,11 +15,12 @@ const TodoItem = ({todo}) => {
             {/*<td><Link to={`/author/${todo.author.id}`}>{todo.author.username}</Link></td>*/}
             {/*<td><Link title={todo.task} to={`/todo/${todo.id}`}>{todo.name}</Link></td>*/}
             <td>{activity(todo)}</td>
+            <td><button onClick={()=>deleteItem(todo.id)} type='button'>Удалить</button></td>
         </tr>
     )
 }
 
-const TodoList = ({todos}) => {
+const TodoList = ({todos, deleteItem}) => {
     return (
         <table className="win bgd">
             <thead>
@@ -29,10 +30,11 @@ const TodoList = ({todos}) => {
                     <th>Автор</th>
                     <th>Текст</th>
                     <th>Статус</th>
+                    <th>Управление</th>
                 </tr>
             </thead>
             <tbody>
-                {todos.map((todo) => <TodoItem todo={todo}/>)}
+                {todos.map((todo) => <TodoItem todo={todo} deleteItem={deleteItem}/>)}
             </tbody>
         </table>
     )
