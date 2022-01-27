@@ -40,19 +40,21 @@ class ProjectForm extends React.Component {
                         <input className="txtb" type="text" name="name" placeholder="Назване" value={this.state.name}
                                onChange={(event) => this.handleChange(event)}/>
                     </div>
+                    <p/>
                     <div className="txtb">
                         {/*<label for="login">name</label>*/}
                         <input className="txtb" type="text" name="repo_link" placeholder="Репозиторий"
                                value={this.state.repo_link}
                                onChange={(event) => this.handleChange(event)}/>
                     </div>
-
+                    <p/>
                     <div>
                         {/*<label className="txtb" for="author">author</label>*/}
                         <input className="txtb" type="number" name="involved_users" placeholder="Участники"
                                value={this.state.involved_users}
                                onChange={(event) => this.handleChange(event)}/>
                     </div>
+                    <p/>
                     <div>
                         {/*<label className="txtb" for="author">author</label>*/}
                         {/*<select className="txtb"  onChange={this.handleChange}>*/}

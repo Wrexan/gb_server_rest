@@ -116,9 +116,11 @@ td {
 
 .msg {
     padding: 1rem;
-    right: 1rem;
+    left: 50%;
+    right: 50%;
+    width: content-box;
     text-align: center;
-    position: absolute;
+    position: static;
     background-color: rgb(46, 60, 69);
     color: lightgray;
 }
