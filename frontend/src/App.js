@@ -152,7 +152,7 @@ class App extends React.Component {
     }
 
     createItem(type, name, repo_link, involved_users, is_active) {
-        console.log(type, name, repo_link, involved_users, is_active)
+        console.log('received', type, name, repo_link, involved_users, is_active)
         const headers = this.get_headers()
         const data = {
             name: name,
@@ -165,10 +165,12 @@ class App extends React.Component {
                 .post(`http://127.0.0.1:8000/api/projects/`, data, {headers})
                 .then(response => {
                     let new_project = response.data
+                    console.log('new_project', new_project)
                     new_project.involved_users = this.state.involved_users.filter((item) =>
                         item.id === new_project.involved_users)[0]
                     this.setState({projs: [...this.state.projs, new_project]})
                 }).catch(error => console.log(error))
+            console.log('this.state.projs', this.state.projs)
         }else{
             // this.state.todos.find((todo) => todo.id === id).is_active = false
             // axios
@@ -180,6 +182,7 @@ class App extends React.Component {
             //         })
             //     }).catch(error => console.log(error))
             // window.location.reload(false)
+
         }
     }
 
@@ -187,24 +190,27 @@ class App extends React.Component {
         return (
             <div>
                 <BrowserRouter>
-                    <nav className="bgd w">
-                        <div className="menu c z">
-                            <li><Link to='/'>Пользователи</Link></li>
-                            <li><Link to='/projects'>Проекты</Link></li>
-                            <li><Link to='/todos'>Заметки</Link></li>
-                        </div>
-                        <div className="menu r z">
-                            <li><span>{this.state.user}</span></li>
-                            <li>{this.is_auth() ?
-                                <a className='button' onClick={() => this.logout()}>Выйти</a> :
-                                <Link to='/login'>Войти</Link>}</li>
-                        </div>
-                    </nav>
+                    <header>
+                        <nav>
+                            <div className="menu c z">
+                                <li><Link to='/'>Пользователи</Link></li>
+                                <li><Link to='/projects'>Проекты</Link></li>
+                                <li><Link to='/todos'>Заметки</Link></li>
+                            </div>
+                            <div className="menu r z">
+                                <li><span>{this.state.user}</span></li>
+                                <li>{this.is_auth() ?
+                                    <a className='button' onClick={() => this.logout()}>Выйти</a> :
+                                    <Link to='/login'>Войти</Link>}</li>
+                            </div>
+                        </nav>
+                    </header>
                     <Routes>
                         <Route exact path='/' element={<UserList users={this.state.users}/>}/>
                         <Route path='/user/:id' element={<ProjectPage projs={this.state.projs}/>}/>
                         <Route path='/users' element={<Navigate to='/'/>}/>
                         <Route exact path='/projects/create' element={<ProjectForm
+                            users={this.state.users}
                             createItem={(name, repo_link, involved_users, is_active) =>
                                 this.createItem(0, name, repo_link, involved_users, is_active)}/>}/>
                         <Route exact path='/projects' element={<ProjectPage

@@ -55,7 +55,7 @@ const ProjectItem = ({proj, deleteItem}) => {
 const ProjectList = ({projs, deleteItem}) => {
     return (
         <div>
-            <table className="win bgd">
+            <table className="win bgd w">
                 <thead>
                 <tr>
                     <th>Название</th>
@@ -67,10 +67,13 @@ const ProjectList = ({projs, deleteItem}) => {
                 <tbody>
                 {projs.map((proj) => <ProjectItem proj={proj} deleteItem={deleteItem}/>)}
                 </tbody>
-                <nav className="menu bgd w r">
-                    <li><Link to='/projects/create'>Создать</Link></li>
-                </nav>
+
             </table>
+            <nav>
+                <div className="menu r w bgd">
+                    <li><Link to='/projects/create'>Создать</Link></li>
+                </div>
+            </nav>
         </div>
     )
 }

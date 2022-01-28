@@ -20,17 +20,18 @@ class ProjectForm extends React.Component {
         const value = (target.name === 'is_active' ? target.checked : target.value);
         switch (name) {
             case 'is_active': this.setState({is_active: target.checked}); break
-            case 'involved_users': this.setState({involved_users: [value]}); break
+            case 'involved_users': this.setState({involved_users: Number(value)}); break
             default: this.setState({[event.target.name]: event.target.value}); break
         }
-        console.log(this.state)
+        // console.log(this.state)
     }
 
     handleSubmit(event) {
         // console.log(this.state.name)
         // console.log(this.state.repo_link)
         // console.log(this.state.involved_users)
-        this.createItem(this.name, this.repo_link, this.involved_users, this.is_active)
+        console.log(this.state.name, this.state.repo_link, this.state.involved_users, this.state.is_active)
+        this.props.createItem(this.state.name, this.state.repo_link, this.state.involved_users, this.state.is_active)
         event.preventDefault()
     }
 
@@ -75,12 +76,13 @@ class ProjectForm extends React.Component {
                     <p/>
                     <div>
                         {/*<label className="txtb" for="author">author</label>*/}
-                        <input className="txtb" type="number" name="involved_users" placeholder="Участники"
-                               value={this.state.involved_users}
-                               onChange={(event) => this.handleChange(event)}/>
-                        {/*<ul>*/}
-                        {/*    <li>{this.state.users}</li>*/}
-                        {/*</ul>*/}
+                        {/*<input className="txtb" type="number" name="involved_users" placeholder="Участники"*/}
+                        {/*       value={this.state.involved_users}*/}
+                        {/*       onChange={(event) => this.handleChange(event)}/>*/}
+                        <select multiple name="involved_users" className="txtb w300 h600"
+                                onChange={(event) => this.handleChange(event)}>
+                            {this.props.users.map((user) => <option value={user.id}>{user.username}</option>)}
+                        </select>
                     </div>
                     <p/>
                     <div>

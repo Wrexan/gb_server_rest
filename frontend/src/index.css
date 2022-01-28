@@ -6,11 +6,22 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    padding-bottom: 110px;
 }
-
+header, footer{
+    color: lightgray;
+    width: 100%;
+    background-color: rgb(46, 60, 69);
+}
 header {
     position: fixed;
     top: 0;
+}
+footer {
+    text-align: center;
+    bottom: 0;
+    position: fixed;
 }
 
 .button {
@@ -54,9 +65,6 @@ td {
 }
 
 .bgd {
-    left: 0;
-    position: fixed;
-    width: 100%;
     background-color: rgb(46, 60, 69);
     color: lightgray;
 }
@@ -71,15 +79,22 @@ td {
 .r {
     text-align: right;
     display: inline-block;
-    float: right
+    float: right;
 }
 
 .w {
-    width: 100%
+    width: 100%;
+}
+.w300 {
+    width: 300px;
+}
+.h600 {
+    height: 600px;
+    overflow-y: auto;
 }
 
 .z {
-    z-index: 10
+    z-index: 10;
 }
 
 .menu {
@@ -98,20 +113,10 @@ td {
     text-decoration: none;
 }
 
-/*.login {*/
-/*    position: fixed;*/
-/*    text-align: right;*/
-/*    right: 1rem;*/
-/*    z-index: 10;*/
-/*}*/
-/*.login > li {*/
-/*    display: inline-block;*/
-/*    padding: 1rem;*/
-/*}*/
-
 .win {
     /*background-color: rgb(46, 60, 69);*/
     margin-top: 4rem;
+    /*overflow-y: scroll;*/
 }
 
 .msg {
@@ -120,17 +125,10 @@ td {
     right: 50%;
     width: content-box;
     text-align: center;
-    position: static;
     background-color: rgb(46, 60, 69);
     color: lightgray;
 }
 
 .txtb {
     font-size: x-large;
-}
-
-.footer {
-    text-align: center;
-    padding: 0;
-    bottom: 0;
 }
