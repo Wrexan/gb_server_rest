@@ -1,17 +1,15 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes, Navigate, useLocation, Link} from 'react-router-dom'
+import {BrowserRouter, Link, Navigate, Route, Routes, useLocation} from 'react-router-dom'
 // import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-// import Menu from './components/Menu';
 import UserList from "./components/User";
 import Footer from './components/footer';
 import TodoList from "./components/Todo";
 import ProjectPage from "./components/Project";
 import LoginForm from './components/Auth.js';
 import ProjectForm from "./components/CreateForm";
-// import * as url from "url";
 
 let useranon = 'Пользователь'
 
@@ -42,7 +40,6 @@ class App extends React.Component {
     }
 
     is_auth() {
-        // return this.state.token != ''
         return !!this.state.token
     }
 
@@ -141,15 +138,12 @@ class App extends React.Component {
                     })
                 }).catch(error => console.log(error))
         }else{
-            // console.log(id, this.state.todos.find((proj) => proj.id === id).is_active)
             this.state.todos.find((todo) => todo.id === id).is_active = false
             axios
                 .delete(`http://127.0.0.1:8000/api/todos/${id}`, {headers})
                 .then(response => {
                     this.setState({
-                        // todos: this.state.todos
                         // todos: this.state.todos.filter((todo) => todo.id !== id)
-                        // todos: this.state.todos[id].state.is_active = false
                         // todos: this.state.todos.find((todo) => todo.id === id).is_active = false
                     })
                 }).catch(error => console.log(error))
@@ -157,9 +151,37 @@ class App extends React.Component {
         }
     }
 
-    // is_del() {
-    //     return !!this.state.del
-    // }
+    createItem(type, name, repo_link, involved_users, is_active) {
+        console.log(type, name, repo_link, involved_users, is_active)
+        const headers = this.get_headers()
+        const data = {
+            name: name,
+            repo_link: repo_link,
+            involved_users: involved_users,
+            is_active: is_active
+        }
+        if(type===0) {
+            axios
+                .post(`http://127.0.0.1:8000/api/projects/`, data, {headers})
+                .then(response => {
+                    let new_project = response.data
+                    new_project.involved_users = this.state.involved_users.filter((item) =>
+                        item.id === new_project.involved_users)[0]
+                    this.setState({projs: [...this.state.projs, new_project]})
+                }).catch(error => console.log(error))
+        }else{
+            // this.state.todos.find((todo) => todo.id === id).is_active = false
+            // axios
+            //     .post(`http://127.0.0.1:8000/api/todos/`, data, {headers})
+            //     .then(response => {
+            //         this.setState({
+            //             // todos: this.state.todos.filter((todo) => todo.id !== id)
+            //             // todos: this.state.todos.find((todo) => todo.id === id).is_active = false
+            //         })
+            //     }).catch(error => console.log(error))
+            // window.location.reload(false)
+        }
+    }
 
     render() {
         return (
@@ -182,7 +204,9 @@ class App extends React.Component {
                         <Route exact path='/' element={<UserList users={this.state.users}/>}/>
                         <Route path='/user/:id' element={<ProjectPage projs={this.state.projs}/>}/>
                         <Route path='/users' element={<Navigate to='/'/>}/>
-                        <Route exact path='/projects/create' element={<ProjectForm/>}/>
+                        <Route exact path='/projects/create' element={<ProjectForm
+                            createItem={(name, repo_link, involved_users, is_active) =>
+                                this.createItem(0, name, repo_link, involved_users, is_active)}/>}/>
                         <Route exact path='/projects' element={<ProjectPage
                             projs={this.state.projs}
                             deleteItem={(id) => this.deleteItem(0, id)}/>}/>

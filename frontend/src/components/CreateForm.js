@@ -10,6 +10,7 @@ class ProjectForm extends React.Component {
             involved_users: [],
             is_active: true
         }
+        // console.log(props.users)
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -17,21 +18,43 @@ class ProjectForm extends React.Component {
         const target = event.target;
         const name = target.name;
         const value = (target.name === 'is_active' ? target.checked : target.value);
-        if(name==='is_active'){
-            this.setState({is_active: target.checked});
-        }else{
-            this.setState({[event.target.name]: event.target.value});
+        switch (name) {
+            case 'is_active': this.setState({is_active: target.checked}); break
+            case 'involved_users': this.setState({involved_users: [value]}); break
+            default: this.setState({[event.target.name]: event.target.value}); break
         }
-        console.log(name, value)
-
+        console.log(this.state)
     }
 
     handleSubmit(event) {
-        console.log(this.state.name)
-        console.log(this.state.repo_link)
-        console.log(this.state.involved_users)
+        // console.log(this.state.name)
+        // console.log(this.state.repo_link)
+        // console.log(this.state.involved_users)
+        this.createItem(this.name, this.repo_link, this.involved_users, this.is_active)
         event.preventDefault()
     }
+
+    // userList(users) {
+    //     console.log(this.users)
+    //     const ids = users.id
+    //     return (
+    //         <ul>
+    //             {ids.map((id) =>
+    //                 <li key={id.toString()}
+    //                 value={users.username} />
+    //             )}
+    //         </ul>
+    //     )
+        // const sidebar = (
+        //     <ul>
+        //         {users.map((user) =>
+        //             <li key={user.id}>
+        //                 {user.username}
+        //             </li>
+        //         )}
+        //     </ul>
+        // );
+    // }
 
     render() {
         return (
@@ -55,6 +78,9 @@ class ProjectForm extends React.Component {
                         <input className="txtb" type="number" name="involved_users" placeholder="Участники"
                                value={this.state.involved_users}
                                onChange={(event) => this.handleChange(event)}/>
+                        {/*<ul>*/}
+                        {/*    <li>{this.state.users}</li>*/}
+                        {/*</ul>*/}
                     </div>
                     <p/>
                     <div>
@@ -68,7 +94,7 @@ class ProjectForm extends React.Component {
                             name="is_active"
                             type="checkbox"
                             checked={this.state.is_active}
-                            onChange={this.handleChange} />
+                            onChange={this.handleChange}/>
                         {/*<input className="txtb" type="bool" name="is_active" placeholder="Активен"*/}
                         {/*       value={this.state.is_active}*/}
                         {/*       onChange={(event) => this.handleChange(event)}/>*/}
