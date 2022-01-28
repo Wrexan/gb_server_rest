@@ -15,13 +15,15 @@ class ProjectForm extends React.Component {
 
     handleChange(event) {
         const target = event.target;
-        const value = (target.name === 'is_active' ? target.checked : target.value);
         const name = target.name;
-        console.log(value)
-        this.setState({
-            [event.target.name]: event.target.value,
-            is_active: value
-        });
+        const value = (target.name === 'is_active' ? target.checked : target.value);
+        if(name==='is_active'){
+            this.setState({is_active: target.checked});
+        }else{
+            this.setState({[event.target.name]: event.target.value});
+        }
+        console.log(name, value)
+
     }
 
     handleSubmit(event) {

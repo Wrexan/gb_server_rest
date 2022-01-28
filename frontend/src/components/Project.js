@@ -67,7 +67,9 @@ const ProjectList = ({projs, deleteItem}) => {
                 <tbody>
                 {projs.map((proj) => <ProjectItem proj={proj} deleteItem={deleteItem}/>)}
                 </tbody>
-                <Link className="win bgd txtb" to='/projects/create'>Создать</Link>
+                <nav className="menu bgd w r">
+                    <li><Link to='/projects/create'>Создать</Link></li>
+                </nav>
             </table>
         </div>
     )
