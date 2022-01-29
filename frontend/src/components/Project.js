@@ -1,17 +1,13 @@
 import {Link, useParams} from "react-router-dom";
 
 function activity(obj) {
-    if (obj.is_active === true) {
-        return 'Активен'
-    } else {
-        return 'Закрыт'
-    }
+    if (obj.is_active === true) {return 'Активен'} else {return 'Закрыт'}
 }
 
 const Project = ({proj, todo}) => {
     let users = proj.involved_users
     return (
-        <table className="win bgd">
+        <table className="win bgd w">
             <thead>
             <tr>
                 <th>Название</th>
@@ -22,13 +18,14 @@ const Project = ({proj, todo}) => {
             </thead>
             <tbody>
             <tr>
-                <td>{proj.name} ({activity(proj)})</td>
+                <td>{proj.name}</td>
                 <td>
                     {users.map((proj) => <li>{proj.username}</li>)}
                 </td>
                 <td>{todo.map((proj) => <li title={proj.task}>{proj.name}</li>)}</td>
                 <td>
-                    <button type='button'>{activity(proj)}</button>
+                    {activity(proj)}
+                    {/*<button type='button'>{activity(proj)}</button>*/}
                     {/*<button onClick={()=>deleteProject(proj.id)} type='button'>Удалить</button>*/}
                 </td>
             </tr>
@@ -43,7 +40,8 @@ const ProjectItem = ({proj, deleteItem}) => {
             <td><Link to={`/project/${proj.id}`}>{proj.name}</Link></td>
             <td>{proj.repo_link}</td>
             <td>
-                <button type='button'>{activity(proj)}</button>
+                {activity(proj)}
+                {/*<button type='button'>{activity(proj)}</button>*/}
             </td>
             <td>
                 <button onClick={() => deleteItem(proj.id)} type='button'>Удалить</button>
@@ -78,8 +76,6 @@ const ProjectList = ({projs, deleteItem}) => {
     )
 }
 const ProjectPage = ({projs, todos, deleteItem}) => {
-    // console.log('1:', typeof(projs), projs)
-    // console.log('2:', typeof(todos), todos)
     let {id} = useParams()
     if (projs.length === 0) {
         return <div/>
@@ -88,8 +84,6 @@ const ProjectPage = ({projs, todos, deleteItem}) => {
     if (id) {
         let proj = projs.find(x => x.id === id)
         let todo = todos.filter(x => x.related_project.id === id)
-        // console.log('3:', projs, id, typeof(proj), proj)
-        // console.log('4:', typeof(todo), todo, todo.author)
         return Project({proj, todo, deleteItem})
     } else {
         return ProjectList({projs, deleteItem})

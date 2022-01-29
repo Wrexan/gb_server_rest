@@ -9,7 +9,8 @@ import Footer from './components/footer';
 import TodoList from "./components/Todo";
 import ProjectPage from "./components/Project";
 import LoginForm from './components/Auth.js';
-import ProjectForm from "./components/CreateForm";
+import ProjectCreateForm from "./components/ProjectCreateForm";
+import TodoCreateForm from "./components/TodoCreateForm";
 
 let useranon = 'Пользователь'
 
@@ -129,7 +130,7 @@ class App extends React.Component {
 
     deleteItem(type, id) {
         const headers = this.get_headers()
-        if(type===0) {
+        if (type === 0) {
             axios
                 .delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
                 .then(response => {
@@ -137,7 +138,7 @@ class App extends React.Component {
                         projs: this.state.projs.filter((proj) => proj.id !== id)
                     })
                 }).catch(error => console.log(error))
-        }else{
+        } else {
             this.state.todos.find((todo) => todo.id === id).is_active = false
             axios
                 .delete(`http://127.0.0.1:8000/api/todos/${id}`, {headers})
@@ -152,39 +153,55 @@ class App extends React.Component {
     }
 
     createItem(type, name, repo_link, involved_users, is_active) {
-        console.log('received', type, name, repo_link, involved_users, is_active)
+        console.log('received:', type, name, repo_link, involved_users, is_active)
         const headers = this.get_headers()
-        const data = {
-            name: name,
-            repo_link: repo_link,
-            involved_users: involved_users,
-            is_active: is_active
-        }
-        if(type===0) {
+        if (type === 0) {
             axios
-                .post(`http://127.0.0.1:8000/api/projects/`, data, {headers})
+                .post(`http://127.0.0.1:8000/api/projects/`, {
+                    'name': name,
+                    'repo_link': repo_link,
+                    'involved_users': involved_users,
+                    'is_active': is_active
+                }, {headers})
                 .then(response => {
-                    let new_project = response.data
-                    console.log('new_project', new_project)
-                    new_project.involved_users = this.state.involved_users.filter((item) =>
-                        item.id === new_project.involved_users)[0]
-                    this.setState({projs: [...this.state.projs, new_project]})
+                    this.load_data()
+                    // let new_project = response.data
+                    // console.log('new_project', new_project)
+                    // new_project.involved_users = this.state.involved_users.filter((item) =>
+                    //     item.id === new_project.involved_users)[0]
+                    // this.setState({projs: [...this.state.projs, new_project]})
                 }).catch(error => console.log(error))
-            console.log('this.state.projs', this.state.projs)
-        }else{
-            // this.state.todos.find((todo) => todo.id === id).is_active = false
-            // axios
-            //     .post(`http://127.0.0.1:8000/api/todos/`, data, {headers})
-            //     .then(response => {
-            //         this.setState({
-            //             // todos: this.state.todos.filter((todo) => todo.id !== id)
-            //             // todos: this.state.todos.find((todo) => todo.id === id).is_active = false
-            //         })
-            //     }).catch(error => console.log(error))
-            // window.location.reload(false)
-
+            // console.log('this.state.projs', this.state.projs)
+        } else {
+            axios
+                .post(`http://127.0.0.1:8000/api/todos/`, {
+                    'name': name,
+                    'task': repo_link,
+                    'author': this.state.user,
+                    'related_project': involved_users,
+                    'is_active': is_active
+                }, {headers})
+                .then(response => {
+                    this.load_data()
+                }).catch(error => console.log(error))
+            console.log('name=', name, 'task=', repo_link, 'author=', this.state.user,
+                'related_project=', involved_users, 'is_active=', is_active,)
+            console.log('this.state.todos', this.state.todos)
         }
     }
+
+    // }
+    // this.state.todos.find((todo) => todo.id === id).is_active = false
+    // axios
+    //     .post(`http://127.0.0.1:8000/api/todos/`, data, {headers})
+    //     .then(response => {
+    //         this.setState({
+    //             // todos: this.state.todos.filter((todo) => todo.id !== id)
+    //             // todos: this.state.todos.find((todo) => todo.id === id).is_active = false
+    //         })
+    //     }).catch(error => console.log(error))
+    // window.location.reload(false)
+
 
     render() {
         return (
@@ -209,7 +226,7 @@ class App extends React.Component {
                         <Route exact path='/' element={<UserList users={this.state.users}/>}/>
                         <Route path='/user/:id' element={<ProjectPage projs={this.state.projs}/>}/>
                         <Route path='/users' element={<Navigate to='/'/>}/>
-                        <Route exact path='/projects/create' element={<ProjectForm
+                        <Route exact path='/projects/create' element={<ProjectCreateForm
                             users={this.state.users}
                             createItem={(name, repo_link, involved_users, is_active) =>
                                 this.createItem(0, name, repo_link, involved_users, is_active)}/>}/>
@@ -221,13 +238,10 @@ class App extends React.Component {
                                 projs={this.state.projs}
                                 todos={this.state.todos}
                                 deleteItem={(id) => this.deleteItem(0, id)}/>}/>
-                        {/*<Route path='*' element={<Navigate to='/projects'/>}/>*/}
-                        {/*<Route path='/project/:id' element={this.is_del() ?*/}
-                        {/*    <Navigate to='/projects'/> :*/}
-                        {/*    <ProjectPage*/}
-                        {/*        projs={this.state.projs}*/}
-                        {/*        todos={this.state.todos}*/}
-                        {/*        deleteProject={(id)=>this.deleteProject(id)}/>}/>*/}
+                        <Route exact path='/todos/create' element={<TodoCreateForm
+                            projs={this.state.projs}
+                            createItem={(name, repo_link, involved_users, is_active) =>
+                                this.createItem(1, name, repo_link, involved_users, is_active)}/>}/>
                         <Route exact path='/todos' element={<TodoList
                             todos={this.state.todos}
                             deleteItem={(id) => this.deleteItem(1, id)}/>}/>

@@ -1,7 +1,11 @@
 import {Link} from "react-router-dom";
 
-function activity(obj){
-    if (obj.is_active === true){return 'Активна'}else{return 'Закрыта'}
+function activity(obj) {
+    if (obj.is_active === true) {
+        return 'Активна'
+    } else {
+        return 'Закрыта'
+    }
 }
 
 const TodoItem = ({todo, deleteItem}) => {
@@ -15,15 +19,18 @@ const TodoItem = ({todo, deleteItem}) => {
             {/*<td><Link to={`/author/${todo.author.id}`}>{todo.author.username}</Link></td>*/}
             {/*<td><Link title={todo.task} to={`/todo/${todo.id}`}>{todo.name}</Link></td>*/}
             <td>{activity(todo)}</td>
-            <td><button onClick={()=>deleteItem(todo.id)} type='button'>Удалить</button></td>
+            <td>
+                <button onClick={() => deleteItem(todo.id)} type='button'>Удалить</button>
+            </td>
         </tr>
     )
 }
 
 const TodoList = ({todos, deleteItem}) => {
     return (
-        <table className="win bgd">
-            <thead>
+        <div>
+            <table className="win bgd w">
+                <thead>
                 <tr>
                     <th>Заметка</th>
                     <th>К проекту</th>
@@ -32,11 +39,17 @@ const TodoList = ({todos, deleteItem}) => {
                     <th>Статус</th>
                     <th>Управление</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {todos.map((todo) => <TodoItem todo={todo} deleteItem={deleteItem}/>)}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+            <nav>
+                <div className="menu r w bgd">
+                    <li><Link to='/todos/create'>Создать</Link></li>
+                </div>
+            </nav>
+        </div>
     )
 }
 

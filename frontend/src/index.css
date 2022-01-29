@@ -64,6 +64,15 @@ td {
     border: 1px solid lightslategray;
 }
 
+.row {
+    float: left;
+    /*display: inline;*/
+}
+
+.block {
+    display: block;
+}
+
 .bgd {
     background-color: rgb(46, 60, 69);
     color: lightgray;
@@ -92,6 +101,10 @@ td {
     height: 600px;
     overflow-y: auto;
 }
+.w600 {
+    width: 600px;
+    overflow: auto;
+}
 
 .z {
     z-index: 10;
@@ -99,12 +112,13 @@ td {
 
 .menu {
     margin-top: 0;
-    padding: 0;
+    padding: 1rem;
 }
 
 .menu > li {
     display: inline-block;
-    padding: 1rem;
+    padding-inline: 1rem;
+
 }
 
 .menu > li > a, span {
