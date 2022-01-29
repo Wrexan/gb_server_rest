@@ -22,7 +22,7 @@ class TodoCreateForm extends React.Component {
     handleChange(event) {
         const target = event.target;
         const name = target.name;
-        const value = (target.name === 'is_active' ? target.checked : target.value);
+        // const value = (target.name === 'is_active' ? target.checked : target.value);
         switch (name) {
             case 'is_active':
                 this.setState({is_active: target.checked}); break
