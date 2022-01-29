@@ -177,16 +177,17 @@ class App extends React.Component {
                 .post(`http://127.0.0.1:8000/api/todos/`, {
                     'name': name,
                     'task': repo_link,
-                    'author': this.state.user,
+                    'author': this.state.users.filter((user) => user.username === this.state.user)[0].id,
                     'related_project': involved_users,
                     'is_active': is_active
                 }, {headers})
                 .then(response => {
                     this.load_data()
                 }).catch(error => console.log(error))
-            console.log('name=', name, 'task=', repo_link, 'author=', this.state.user,
-                'related_project=', involved_users, 'is_active=', is_active,)
-            console.log('this.state.todos', this.state.todos)
+            // console.log('name=', name, 'task=', repo_link, 'author=', this.state.user,
+            //     'related_project=', involved_users, 'is_active=', is_active,)
+            // console.log('this.state.todos', this.state.todos)
+            // console.log('index', this.state.users.filter((user) => user.username === this.state.user)[0].id)
         }
     }
 
