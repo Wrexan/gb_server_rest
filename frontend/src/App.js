@@ -88,19 +88,12 @@ class App extends React.Component {
         // console.log('mount token ' + this.state.token)
     }
 
-    load_data() {
-        // console.log('load_data() token ' + this.state.token)
+    load_projects(search = ''){
         let headers = this.get_headers()
-        axios
-            .get('http://127.0.0.1:8000/api/users/', {headers})
-            .then(response => {
-                this.setState({users: response.data.results})
-            }).catch(error => {
-            console.log(error)
-            this.setState({users: []})
-        })
-
-        const requestOne = axios.get('http://127.0.0.1:8000/api/projects/', {headers});
+        const requestOne = (search ?
+            axios.get('http://127.0.0.1:8000/api/projects/?name=' + search, {headers}) :
+            axios.get('http://127.0.0.1:8000/api/projects/', {headers}));
+        console.log(search, 'http://127.0.0.1:8000/api/projects&name=' + search)
         const requestTwo = axios.get('http://127.0.0.1:8000/api/todos/', {headers});
         axios
             .all([requestOne, requestTwo])
@@ -117,6 +110,38 @@ class App extends React.Component {
             this.setState({projs: []})
             this.setState({todos: []})
         })
+    }
+
+    load_data() {
+        // console.log('load_data() token ' + this.state.token)
+        let headers = this.get_headers()
+        axios
+            .get('http://127.0.0.1:8000/api/users/', {headers})
+            .then(response => {
+                this.setState({users: response.data.results})
+            }).catch(error => {
+            console.log(error)
+            this.setState({users: []})
+        })
+        this.load_projects()
+
+        // const requestOne = axios.get('http://127.0.0.1:8000/api/projects/', {headers});
+        // const requestTwo = axios.get('http://127.0.0.1:8000/api/todos/', {headers});
+        // axios
+        //     .all([requestOne, requestTwo])
+        //     .then(axios.spread((...responses) => {
+        //             // console.log(responses[0].data, responses[1].data)
+        //             this.setState({
+        //                 projs: responses[0].data.results,
+        //                 todos: responses[1].data.results,
+        //                 del: ''
+        //             })
+        //         })
+        //     ).catch(error => {
+        //     console.log(error)
+        //     this.setState({projs: []})
+        //     this.setState({todos: []})
+        // })
 
         axios
             .get('http://127.0.0.1:8000/api/todos/', {headers})
@@ -233,6 +258,7 @@ class App extends React.Component {
                                 this.createItem(0, name, repo_link, involved_users, is_active)}/>}/>
                         <Route exact path='/projects' element={<ProjectPage
                             projs={this.state.projs}
+                            load_projects={(name) => this.load_projects(name)}
                             deleteItem={(id) => this.deleteItem(0, id)}/>}/>
                         <Route path='/project/:id' element={
                             <ProjectPage
