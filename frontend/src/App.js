@@ -178,7 +178,7 @@ class App extends React.Component {
     }
 
     createItem(type, name, repo_link, involved_users, is_active) {
-        console.log('received:', type, name, repo_link, involved_users, is_active)
+        // console.log('received:', type, name, repo_link, involved_users, is_active)
         const headers = this.get_headers()
         if (type === 0) {
             axios
@@ -216,18 +216,44 @@ class App extends React.Component {
         }
     }
 
+    // editItem(type, name, repo_link, involved_users, is_active) {
+    //     console.log('received:', type, name, repo_link, involved_users, is_active)
+    //     const headers = this.get_headers()
+    //     if (type === 0) {
+    //         axios
+    //             .patch(`http://127.0.0.1:8000/api/projects/`, {
+    //                 'name': name,
+    //                 'repo_link': repo_link,
+    //                 'involved_users': involved_users,
+    //                 'is_active': is_active
+    //             }, {headers})
+    //             .then(response => {
+    //                 this.load_data()
+    //                 // let new_project = response.data
+    //                 // console.log('new_project', new_project)
+    //                 // new_project.involved_users = this.state.involved_users.filter((item) =>
+    //                 //     item.id === new_project.involved_users)[0]
+    //                 // this.setState({projs: [...this.state.projs, new_project]})
+    //             }).catch(error => console.log(error))
+    //         // console.log('this.state.projs', this.state.projs)
+    //     } else {
+    //         axios
+    //             .patch(`http://127.0.0.1:8000/api/todos/`, {
+    //                 'name': name,
+    //                 'task': repo_link,
+    //                 'author': this.state.users.filter((user) => user.username === this.state.user)[0].id,
+    //                 'related_project': involved_users,
+    //                 'is_active': is_active
+    //             }, {headers})
+    //             .then(response => {
+    //                 this.load_data()
+    //             }).catch(error => console.log(error))
+    //         // console.log('name=', name, 'task=', repo_link, 'author=', this.state.user,
+    //         //     'related_project=', involved_users, 'is_active=', is_active,)
+    //         // console.log('this.state.todos', this.state.todos)
+    //         // console.log('index', this.state.users.filter((user) => user.username === this.state.user)[0].id)
+    //     }
     // }
-    // this.state.todos.find((todo) => todo.id === id).is_active = false
-    // axios
-    //     .post(`http://127.0.0.1:8000/api/todos/`, data, {headers})
-    //     .then(response => {
-    //         this.setState({
-    //             // todos: this.state.todos.filter((todo) => todo.id !== id)
-    //             // todos: this.state.todos.find((todo) => todo.id === id).is_active = false
-    //         })
-    //     }).catch(error => console.log(error))
-    // window.location.reload(false)
-
 
     render() {
         return (

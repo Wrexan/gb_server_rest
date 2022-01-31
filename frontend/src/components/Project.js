@@ -62,6 +62,7 @@ const ProjectItem = ({proj, deleteItem}) => {
             </td>
             <td>
                 <button onClick={() => deleteItem(proj.id)} type='button'>Удалить</button>
+                {/*<button onClick={() => deleteItem(proj.id)} type='button'>Изменить</button>*/}
             </td>
         </tr>
     )
