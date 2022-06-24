@@ -27,9 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -64,6 +62,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -148,7 +150,7 @@ AUTH_USER_MODEL = 'usersapp.User'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
